@@ -247,6 +247,11 @@ public class SortingTechniques {
 	private static void mergeSort(int[] array) {
 		
 		int []temp = new int[array.length]; //temporary Array
+		
+		for(int i = 0; i < temp.length; ++i)
+			temp[i] = Integer.MIN_VALUE;
+			
+			
 		mergeSort(array, temp, 0, array.length-1);
 	}
 	
@@ -298,7 +303,7 @@ public class SortingTechniques {
 	}
 
 	public static void main(String[] args) {
-		int[] array = new int[] { 3, 2, 1, 10, 15, 16};
+		int[] array = new int[] {1, -2, 0, 1, 0};
 		mergeSort(array);
 		Arrays.stream(array).forEach(element -> System.out.println(element));
 	}
