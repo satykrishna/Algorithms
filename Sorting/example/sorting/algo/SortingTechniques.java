@@ -295,15 +295,16 @@ public class SortingTechniques {
 		for(i = middle; i <=right; i++) {
 			temp[tempPos++] = array[i];
 		}
-		
-		for(i = right; i>=left; i--) {
-			array[i] = temp[i];
+	
+		for( i = 0; i < size; i++) {
+			array[right] = temp[right];
+			right--;
 		}
 		
 	}
 
 	public static void main(String[] args) {
-		int[] array = new int[] {1, -2, 0, 1, 0};
+		int[] array = new int[] {1, -2, 0, 1, 0, 100, 101, 100, 200, 201, -94, -943, -904};
 		mergeSort(array);
 		Arrays.stream(array).forEach(element -> System.out.println(element));
 	}
