@@ -243,67 +243,66 @@ public class SortingTechniques {
 	}
 	
 	
-	public static void mergeSort(int []array) {
+
+	private static void mergeSort(int[] array) {
 		
-		int[] temp = new int[1];
-		
-		mergeSort(array, temp, 0,  array.length-1);
+		int []temp = new int[array.length]; //temporary Array
+		mergeSort(array, temp, 0, array.length-1);
 	}
 	
 	
-	public static void mergeSort(int[] array, int[]temp, int left,  int right) {
+	private static void mergeSort(int[] array, int[] temp, int left, int right) {
 		
-		if(left >= right ) {
-			return;
+		if(right > left ) {
+			
+			int middle = (right+left)/2;
+			mergeSort(array, temp, left, middle);
+			mergeSort(array, temp, middle+1, right);
+			merge(array, temp, left, middle+1, right);
 		}
-		temp = new int[right-left+1];
-		int middle = (left+right)/2;
-		mergeSort(array, temp, left, middle);
-		mergeSort(array, temp,  middle+1, right);		
-		mergeLeftAndRight(array, temp, left, middle+1, right);
+		
 	}
 
-
-
-	private static void mergeLeftAndRight(int[] array, int[] temp, int left, int middle, int right) {
+	private static void merge(int[] array, int[] temp, int left, int middle, int right) {
 		
-		int leftEnd = middle-1;
-		int storePtr = left;
-		int size = right-left-1;
+		int i;
+		int leftEnd = middle-1;;
+		int size = right -left+1;
+		int tempPos = left;
 		
-		while((left <=leftEnd) && (middle <=right)) {
+		
+		while(left <=leftEnd && middle <=right) {
 			
 			if(array[left] <= array[middle]) {
-				temp[storePtr++] = array[left++];
+				temp[tempPos++] = array[left++];
+			}
+			else {
+				temp[tempPos++] = array[middle++];
 			}
 			
-			else if(array[left] > array[middle]) {
-				temp[storePtr++] = array[middle++];
-			}
-			
-		}
-		
-		//take care of remaining elements on left as well as on the right
-		
-		while(left <=leftEnd) {
-			temp[storePtr++]=array[left++];
-		}
-		
-		while(middle <= right) {
-			temp[storePtr++] = array[middle++];
 		}
 		
 		
-		for(int i = 0; i <=size; i++) {
-			array[right] = temp[right];
-			right--;
+		for(i = left; i <=leftEnd; i++) {
+			temp[tempPos++] = array[i];
+		}
+		
+		for(i = middle; i <=right; i++) {
+			temp[tempPos++] = array[i];
+		}
+		
+		for(i = right; i>=left; i--) {
+			array[i] = temp[i];
 		}
 		
 	}
 
 	public static void main(String[] args) {
-		int[] array = new int[] { 3, 2, 1};
+		int[] array = new int[] { 3, 2, 1, 10, 15, 16};
 		mergeSort(array);
 		Arrays.stream(array).forEach(element -> System.out.println(element));
 	}
+
+	
+
 }
