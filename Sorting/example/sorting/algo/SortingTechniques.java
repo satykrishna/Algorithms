@@ -25,7 +25,7 @@ public class SortingTechniques {
 		}
 		return array;
 	}
-
+	
 	public static void bubbleSortRevisited(int[] array) {
 		for (int pass = array.length; pass > 0; pass--) {
 			for (int i = 1; i < pass; i++) {
@@ -595,14 +595,61 @@ public class SortingTechniques {
         arr = Arrays.copyOf(output, output.length);		
 		
 	}
-
-	public static void main(String[] args) {
-		int[] array = new int[] { 1, -2, 0, 1, 0, 100, 101, 100, 200, 201, -94, -943, -904 };
+	
+	
+	public static int findWhoWinsElection(int[] array) {
 		
-		quickSort(array);
+		Arrays.sort(array);
+		
+		int currentCandidate = array[0];
+		int maxCandidate = array[0];
+		
+		int maxVotes = 1;
+		int currentVotes = 1;
+		
+		
+		for(int i = 1; i < array.length; ++i) {
+			
+			if(array[i] == currentCandidate) {
+				currentVotes++;
+			}
+			else {
+				currentCandidate = array[i];
+				currentVotes=1;
+			}
+			
+			if(maxVotes < currentVotes) {
+				maxVotes = currentVotes;
+				maxCandidate = currentCandidate;
+			}
+			
+		}
+		
+		return maxCandidate;
+		
+	}
+	
+	
+	public static int findElementinTwoArraysWhoSumEqualsK(int []A, int[] B, int k) {
+		Arrays.sort(A);
+		for(int i = 0; i < B.length; i++) {
+			int remaining= k-B[i];
+			int elementIndex = Arrays.binarySearch(A, remaining);
+			if(elementIndex!=-1)
+				return A[elementIndex];
+		}
+		
+		return -1;
+	}
 
-		Arrays.stream(array).forEach(element -> System.out.println(element));
-
+	
+	
+	public static void main(String[] args) {
+		int[] array = new int[] { 1, 1, -2, 0, 1, 0, 100, 101, 100, 200, 201, -94, -943, -904 };
+		
+		int x = findWhoWinsElection(array);
+		
+		System.out.println();
 	}
 
 }
