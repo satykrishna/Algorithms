@@ -1,5 +1,6 @@
 package example.streams.chap7;
 
+import java.util.Spliterator;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
 import java.util.function.BinaryOperator;
@@ -7,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.apache.log4j.Logger;
 
@@ -89,59 +91,63 @@ public class StreamsParallel {
 		return count;
 	}
 
-	public static int countWordsUsingStreamsWithExternalCollector(String sentence) {
-		return IntStream.range(0, sentence.length()).mapToObj(sentence::charAt).parallel().collect(new WhiteSpaceCollector());
+	public static int countWordsUsingStreamsWithExternalCollectorWithoutParallel(String sentence) {
+		return IntStream.range(0, sentence.length()).mapToObj(sentence::charAt).collect(new WhiteSpaceCollector());
 	}
 
-	public static int countWordsUsingInternalCollector(String sentence) {
-		return 1;
+	public static int countWordsUsingInternalCollectorusingCollectOperation(String sentence) {
+		return IntStream.range(0, sentence.length())
+		.mapToObj(sentence::charAt)
+		.collect(()-> new WordCollector(true, 0), 
+				(WordCollector wc, Character ch)-> {
+					if(Character.isWhitespace(ch)) {
+						if(!wc.isLastSpace()) {
+							wc.setLastSpace(true);
+							wc.setCount(wc.getCount()+1);
+						}
+					}
+					else {
+						wc.setLastSpace(false);
+					}
+					
+				}, 
+				(wc1, wc2)-> {
+					wc1.setCount(wc2.getCount()+1);
+					wc1.setLastSpace(true);
+				}).getCount();
+ 	}
+
+	public static int countWordsUsingCollectButUsingWordCollectorMethods(String sentence) {
+		
+		WordCollector wordCollector = IntStream.range(0, sentence.length())
+				.mapToObj(sentence::charAt)
+				.collect(()-> new WordCollector(false, 0), WordCollector::accumulate, WordCollector::combine);
+		
+		return wordCollector.getCount();
+		
 	}
-
-	class WordCollector {
-
-		private boolean lastSpace;
-		private int count;
-
-		public boolean isLastSpace() {
-			return lastSpace;
-		}
-
-		public void setLastSpace(boolean lastSpace) {
-			this.lastSpace = lastSpace;
-		}
-
-		public int getCount() {
-			return count;
-		}
-
-		public void setCount(int count) {
-			this.count = count;
-		}
-
-		public WordCollector(boolean lastSpace, int count) {
-			super();
-			this.lastSpace = lastSpace;
-			this.count = count;
-		}
-
-		public WordCollector accumulate(Character ch) {
-
-			if (Character.isWhitespace(ch)) {
-				return lastSpace ? this : new WordCollector(true, count);
-			}
-			else {
-				return lastSpace ? new WordCollector(false, count + 1) : this;
-			}
-		}
-
-		public WordCollector combine(WordCollector wc2) {
-			return new WordCollector(true, this.count + wc2.count);
-		}
+	
+	public static int countWordsUsingReduceOps(String sentence ) {
+		WordCollector wc = IntStream.range(0, sentence.length())
+				.mapToObj(sentence::charAt)
+				.reduce(new WordCollector(true, 0), WordCollector::accumulator, WordCollector::combineForParallelOperation);
+		
+		return wc.getCount();
 	}
-
+	
+	
+	public static int countWordsUsingSplitIteratorParallelStream(String sentence) {
+		 Spliterator<Character> splitIterator = new WordCollectorSplitIterator(sentence);
+		 Stream<Character> stream = StreamSupport.stream(splitIterator, true);
+		 return stream.reduce(new WordCollector(true, 0), WordCollector::accumulator, WordCollector::combineForParallelOperation).getCount();
+	}
+	
+	
 	public static void main(String[] args) {
 		// comparePerformance(1000000);
-		logger.info(countWordsUsingStreamsWithExternalCollector("S A T Y A"));
+//		logger.info(countWordsUsingStreamsWithExternalCollectorWithoutParallel("S A T Y A"));
+		logger.info(countWordsUsingCollectButUsingWordCollectorMethods("S A T Y A"));
 
 	}
+	
 }
