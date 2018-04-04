@@ -23,7 +23,7 @@ public class TestPoint {
 		
 		assertEquals(5, p2.getY());
 		
-		int result = Point.compareByXandThenY.compare(p1, p2);
+		int result = Point.pointComparator.compare(p1, p2);
 		
 		assertEquals(-1, result);
 	}
@@ -38,7 +38,7 @@ public class TestPoint {
 		List<Point> expectedPoints = 
 				Arrays.asList(new Point(14, 4), new Point(20, 5));
 		
-		assertEquals(expectedPoints, Point.moveAllPointsRightBy(points, 10));
+		assertEquals(expectedPoints, Point.moveAllPointsBy(points, 10));
 	}
 
 }

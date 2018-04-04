@@ -26,11 +26,6 @@ public class Point {
 		this.y = y;
 	}
 
-	public Point() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 	public Point(int x, int y) {
 		super();
 		this.x = x;
@@ -40,12 +35,41 @@ public class Point {
 	public Point moveRightBy(int x) {
 		return new Point(this.x+x, y);
 	}
-	
-	public static final Comparator<Point> compareByXandThenY =
+
+	public static Comparator<Point> pointComparator = 
 			comparing(Point::getX).thenComparing(Point::getY);
-			
-	public static List<Point> moveAllPointsRightBy(List<Point> points, int x) {
-		return points.stream().map(point->new Point(point.x+x, point.y))
+	
+	public static List<Point> moveAllPointsBy(List<Point> points, int shiftX) {
+		
+		List<Point> shiftedPoints = 
+				points.stream()
+				.map(point -> new Point(point.getX() + shiftX, point.getY()))
 				.collect(toList());
+		
+		return shiftedPoints;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		
+		if(!(object instanceof Point))
+			return false;
+		
+		Point other = (Point)object;
+		
+		if(other.x != x || other.y != y)
+			return false;
+		
+		return true;
+		
 	}
 }
