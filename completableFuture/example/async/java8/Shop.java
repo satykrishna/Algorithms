@@ -3,6 +3,7 @@ package example.async.java8;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
+import java.util.stream.Stream;
 
 import static java.util.concurrent.CompletableFuture.*;
 
@@ -30,7 +31,7 @@ public class Shop {
 
 	public static void delay() {
 		try {
-			Thread.sleep(1000L);
+			Thread.sleep(1000);
 		}
 		catch (InterruptedException e) {
 			throw new RuntimeException(e);
@@ -46,6 +47,7 @@ public class Shop {
 	public Future<Double> getPriceAysncUsingCompleteableFutureStaticMethods(String product) {
 		return supplyAsync(()->calculatePrice(product));
 	}
+	
 	
 	public String getPriceUpdated(String product) {
 		double price = calculatePrice(product);
