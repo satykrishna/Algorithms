@@ -10,6 +10,8 @@ import java.time.Month;
 import java.time.Period;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalUnit;
 
 public class TimeDateAPIEx {
 
@@ -108,6 +110,21 @@ public class TimeDateAPIEx {
 		
 		Period twoYearSixMonthsOneDay = Period.of(2, 6, 1);
 		
+		Duration.ofDays(5);
+		
+		Duration.parse("12");
+		
+	}
+
+	public static void dateManiplulation() {
+		
+		LocalDate localDate = LocalDate.now();
+		
+		LocalDate d1 = localDate.withYear(2004);
+		
+		LocalDate d2 = localDate.withDayOfMonth(21);
+		
+		LocalDate d3 = localDate.with(ChronoField.MICRO_OF_DAY, 5);
 		
 		
 	}
