@@ -1,5 +1,7 @@
 package java8.datetime.api;
 
+import static java.time.temporal.TemporalAdjusters.next;
+
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
@@ -9,6 +11,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -17,8 +20,6 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.TemporalAmount;
-import java.time.temporal.TemporalUnit;
 import java.util.Locale;
 
 public class TimeDateAPIEx {
@@ -49,6 +50,8 @@ public class TimeDateAPIEx {
 
 		LocalDate localDate = LocalDate.parse("2014-1-13");
 
+		LocalDate d = LocalDate.from(date);
+	
 	}
 
 	public static void localTimeFunction() {
@@ -199,7 +202,18 @@ public class TimeDateAPIEx {
 		
 		 LocalDate transformedDate = localDate.minus(5, ChronoUnit.DAYS)
 				 							  .plusDays(4);
+		LocalDate d4 = localDate.plusWeeks(1);
 		
+		LocalDate d5 = localDate.minusYears(2);
+		
+		LocalDate d6 = localDate.plus(6, ChronoUnit.MONTHS);
+	}
+	
+	public static void usingTemporalAdjusters() {
+		
+		LocalDate localDate = LocalDate.now();
+
+		LocalDate d1 = localDate.with(next(DayOfWeek.SUNDAY));
 	}
 	
 	
@@ -327,8 +341,10 @@ public class TimeDateAPIEx {
 	   
 	   ZonedDateTime zdt3 = instant.atZone(romeZone);
 	   
-	   LocalDateTime timeFromInstant = LocalDateTime.ofInstant(instant, romeZone);
+	   Instant instantFromLocalDateTime = dateTime.toInstant((ZoneOffset) romeZone);
 	   
+	   LocalDateTime timeFromInstant = LocalDateTime.ofInstant(instant, romeZone);
+
 	   
    }
    
