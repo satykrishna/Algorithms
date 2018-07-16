@@ -8,11 +8,11 @@ import algos.pojo.datastructure.DLLNode;
 import algos.pojo.datastructure.RLLNode;
 import algos.pojo.datastructure.SLLNode;
 import algos.pojo.exceptions.LinkedListException;
-import algos.pojo.utils.LinkedListFunctions;
+import algos.pojo.utils.LinkedListManager;
 
-public class LinkedListManager implements LinkedListFunctions {
+public class LinkedListManagerImpl implements LinkedListManager {
 
-	private static Logger logger = Logger.getLogger(LinkedListManager.class.getName());
+	private static Logger logger = Logger.getLogger(LinkedListManagerImpl.class.getName());
 
 	
 	/*
@@ -651,6 +651,27 @@ public class LinkedListManager implements LinkedListFunctions {
 		}
 		
 		return table.get(list);
+	}
+
+	@Override
+	public SLLNode mergeSort(SLLNode head) {
+		
+		if(head == null || head.getNext() == null ) {
+			return head;
+		}
+		
+		SLLNode middleNode =  findMiddle(head);
+		
+		SLLNode middleNextNode = middleNode.getNext();
+		
+		middleNode.setNext(null);
+		
+		SLLNode left = mergeSort(head);
+		
+		SLLNode right = mergeSort(middleNextNode);
+		
+		return merge(left, right);
+		
 	}
 	
 	

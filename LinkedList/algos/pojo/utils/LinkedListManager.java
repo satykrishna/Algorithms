@@ -6,7 +6,7 @@ import algos.pojo.datastructure.RLLNode;
 import algos.pojo.datastructure.SLLNode;
 import algos.pojo.exceptions.LinkedListException;
 
-public interface LinkedListFunctions {
+public interface LinkedListManager {
 
 	public abstract int length(SLLNode list);
 	
@@ -56,5 +56,6 @@ public interface LinkedListFunctions {
 	
 	public abstract RLLNode clone(RLLNode list);
 
+	public abstract SLLNode mergeSort(SLLNode head);
 }
 

@@ -261,10 +261,95 @@ public class SortingTechniques {
 		
 		array = Arrays.copyOf(temp, temp.length);
 	}
+	
+	
+	public boolean doesArrayContainRepeatedElements(int[] array) {
+		
+		boolean isRepeated = false;
+		
+		mergeSortAlgorithm(array);
+		
+		for(int i = 0; i < array.length-1; i++) {
+			if(array[i+1] == array[i]) {
+				isRepeated = true;
+				break;
+			}
+		}
+		
+		return isRepeated;
+	}
+	
+	public int whoWinsElection(int[] array ) {
+		
+		
+		mergeSortAlgorithm(array);
+		
+		int currentCandidate = array[0];
+		
+		int maxCandidate = array[0];
+		
+		int currentVotes = 1, maxVotes = 1;
+		
+		for(int i = 1; i < array.length; ++i) {
+			
+			if(array[i] == currentCandidate) {
+				currentVotes++;
+			}
+			else {
+				currentCandidate = array[i];
+				currentVotes = 1;
+			}
+			
+			if(currentVotes > maxVotes) {
+				maxVotes = currentVotes;
+				maxCandidate = array[i];
+			}
+		}
+		
+		return maxCandidate;
+	}
 
+	public void mergeTwoArraysinToOne(int a[], int b[], int m, int n) {
+		
+		int endA =  a.length-1;
+		
+		
+		while(m >=0 && n >=0) {
+			
+			if(a[m] <= b[n]) {
+				a[endA] = a[m];
+				m--;
+			}
+			
+			else {
+				a[endA] = b[n];
+				n--;
+			}
+			
+			endA--;
+		}
+		
+		if(m > 0) {
+			while( m>=0 ) {
+				a[endA] = a[m];
+				m--;
+				endA--;
+			}
+		}
+		
+		if(n > 0) {
+			while(n >=0) {
+				a[endA] = a[n];
+				n--;
+				endA--;
+			}
+		}
+		
+	}
+	
 	public static void main(String[] args) {
 		
-		int[] array = new int[] {223, 3333, -123343, 1, 1, -2, 1001, -1001, 2, 1, 100, 101, 100, 200, 201, 0, 0, 0, -1002, -94, -943, -904,  -2, -22, 22, 22, 12};
+		int[] array = new int[] {223, 3333, -123343, 1, 1, -2, 1001, -1001, 2, 1, 1, 1,1,  100, 101, 100, 200, 201, 0, 0, 0, -1002, -94, -943, -904,  -2, -22, 22, 22, 12};
 
 		/*System.out.println("----BUBBLE----");
 		
@@ -274,10 +359,10 @@ public class SortingTechniques {
 
 		selectionSortAlgorithm(array);*/
 
-		System.out.println("---INSERT-----");
+		/*System.out.println("---INSERT-----");
 
 		insertSortAlgorithm(array);
-
+*/
 		/*System.out.println("----SHELL----");
 
 		shellSortAlgorithm(array);
@@ -289,6 +374,10 @@ public class SortingTechniques {
 	/*	System.out.println("---- QUICK---- ");
 		
 		quickSortAlgorithm(array);*/
+		
+		int maxCandidate = new SortingTechniques().whoWinsElection(array);
+		
+		System.out.println("Max Candidate: " + maxCandidate);
 
 	}
 
